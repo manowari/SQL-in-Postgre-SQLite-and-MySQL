@@ -5,6 +5,8 @@ import sql_project.mysql.MySQLDatabaseConnection;
 import sql_project.postgre.PostgreSQLDataManipulation;
 import sql_project.postgre.PostgreSQLDatabaseConnection;
 import sql_project.setups.DatabaseSetup;
+import sql_project.shared_functionalities.DatabaseAccessor;
+import sql_project.shared_functionalities.DatabaseAccessorImpl;
 import sql_project.sql.SQLDataManipulation;
 import sql_project.sql.SQLDatabaseConnection;
 import sql_project.sqlite.SQLiteDataManipulation;
@@ -14,9 +16,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
 //        // Setup databases
 //        DatabaseSetup.createPostgreSQLDatabase();
 //        DatabaseSetup.createMySQLDatabase();
@@ -29,7 +32,7 @@ public class Main {
 //        testDatabaseConnection(SQLiteDatabaseConnection.class.getName());
 
 
-        retrieveData(DatabaseConfigLoader.getConnection("postgresql-database-config.properties"));
+        retrieveData(PostgreSQLDatabaseConnection.getConnection());
 
 
         // Test the insert operations
@@ -55,23 +58,16 @@ public class Main {
             System.out.println("db empty");
         }
     }
-
     private static void retrieveData(Connection connection) {
-        String selectQuery = "SELECT * FROM users";
-        try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(selectQuery)) {
+        DatabaseAccessor databaseAccessor = new DatabaseAccessorImpl();
 
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String name = resultSet.getString("name");
-                String email = resultSet.getString("email");
-                int age = resultSet.getInt("age");
+                  List<String> allTablesData = databaseAccessor.getAllTables(connection);
 
-                System.out.println("ID: " + id + ", Name: " + name + ", Email: " + email + ", Age: " + age);
-            }
-        } catch (SQLException e) {
-            handleSQLException(e);
-        }
+// Process the results as needed
+
+                System.out.println(allTablesData.toString());
+
+
     }
 
     private static void handleSQLException(SQLException e) {

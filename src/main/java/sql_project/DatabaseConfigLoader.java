@@ -9,7 +9,7 @@ public class DatabaseConfigLoader {
 
     public static Connection getConnection(String databaseType) {
 
-        log("Loading database configuration...");
+        log(" 1. Loading database configuration...");
 
         Properties properties = loadProperties(databaseType);
         if (properties == null) {
@@ -22,10 +22,11 @@ public class DatabaseConfigLoader {
         String driver = properties.getProperty("db.driver");
         String dbName = properties.getProperty("db.database");
 
-        log("Loaded properties - url: " + url + ", username: " + username + ", driver: " + driver + ", password: " + password + ", dbName: " + dbName);
+        log(" 2. Loaded properties - url: " + url + ", username: " + username + ", driver: " + driver + ", password: " + password + ", dbName: " + dbName);
 
-        log("Loading DB driver...");
         if (loadDriver(driver)) {
+            log(" 3. Loading DB driver...");
+
             return establishConnection(url, username, password, dbName);
         } else {
             return null; // Return null if loading driver fails
@@ -65,7 +66,12 @@ public class DatabaseConfigLoader {
 
     private static Connection establishConnection(String url, String username, String password, String dbName) {
         try {
+            log(" 4 .trying....");
+
+
             Connection connection = DriverManager.getConnection(url, username, password);
+            log(" 5 .connection...." + connection);
+
             if (isDatabaseConnected(connection, dbName)) {
                 log("Connected to the database!");
                 return connection;
@@ -86,6 +92,8 @@ public class DatabaseConfigLoader {
 
             while (resultSet.next()) {
                 String existingDbName = resultSet.getString("TABLE_CAT");
+                log(" 5 .existingDbName...." + existingDbName);
+
                 if (existingDbName.equals(dbName)) {
                     return true;
                 }

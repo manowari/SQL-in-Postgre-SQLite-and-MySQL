@@ -1,0 +1,183 @@
+//Codee here
+
+//accessing all tables data
+Connection connection = // obtain your connection
+List<List<String>> allTablesData = DatabaseAccessor.getAllTablesData(connection);
+
+// Process the results as needed
+for (List<String> tableData : allTablesData) {
+    for (String rowData : tableData) {
+        System.out.println(rowData);
+    }
+}
+
+
+//main
+package sql_project;
+
+import sql_project.mysql.MySQLDataManipulation;
+import sql_project.mysql.MySQLDatabaseConnection;
+import sql_project.postgre.PostgreSQLDataManipulation;
+import sql_project.postgre.PostgreSQLDatabaseConnection;
+import sql_project.setups.DatabaseSetup;
+import sql_project.shared_functionalities.DatabaseAccessor;
+import sql_project.shared_functionalities.DatabaseAccessorImpl;
+import sql_project.shared_functionalities.Utils;
+import sql_project.sql.SQLDataManipulation;
+import sql_project.sql.SQLDatabaseConnection;
+import sql_project.sqlite.SQLiteDataManipulation;
+import sql_project.sqlite.SQLiteDatabaseConnection;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
+
+public class Main {
+    Utils utils =new Utils();
+
+    public static void main(String[] args) throws SQLException {
+
+        boolean isConnected = false;
+
+
+
+
+        // Test the insert operations
+        String[] columns = {"column_name"};
+        Object[] values = {'a'};
+
+        // Test the insert operations
+        SQLDataManipulation.insertData("John Doe", columns, values, 25);
+        MySQLDataManipulation.insertData("Jane Smith", 30);
+        PostgreSQLDataManipulation.insertData("Bob Johnson", 28);
+        SQLiteDataManipulation.insertData("Alice Brown", 22);
+
+        String classParam = SQLDatabaseConnection.class.getName();
+
+        isConnected = isDatabaseConnected(classParam);
+
+if(isConnected || !isConnected){
+
+    log("is COnnected");
+
+// Create an instance of the DatabaseAccessor
+    DatabaseAccessor databaseAccessor = new DatabaseAccessorImpl();
+
+    // Example of executing a parameterized query
+    String parameterValue = "example"; // Replace with the actual parameter value
+
+    Connection connection = PostgreSQLDatabaseConnection.getConnection();
+
+            List<List<String>> allTablesData = databaseAccessor.getAllTablesData(connection);
+
+// Process the results as needed
+    for (List<String> tableData : allTablesData) {
+        for (String rowData : tableData) {
+            System.out.println(rowData);
+        }
+    }
+
+
+
+
+}else{
+
+}
+
+
+    }
+
+    private static boolean isDatabaseConnected(String classParam) {
+        log(" MAIN - accessing connection");
+        if (classParam != null) {
+            try {
+                // Attempt to establish a connection dynamically
+                Class.forName(classParam).getMethod("getConnection").invoke(null);
+
+                // If no exception is thrown, the connection is successful
+                System.out.println(classParam + " database connection established successfully.");
+                return true;
+            } catch (Exception e) {
+                // Print the stack trace for debugging purposes
+                e.printStackTrace();
+                // Return false to indicate connection failure
+                return false;
+            }
+        } else {
+            System.out.println("Database name is empty.");
+            // Return false when the database name is empty
+            return false;
+        }
+    }
+
+
+    private static void testDatabaseConnection(String classParam) {
+        if (classParam != null) {
+            try {
+                Class.forName(classParam).getMethod("getConnection").invoke(null);
+                System.out.println(classParam + " database connection established successfully.");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("db empty");
+        }
+    }
+
+
+
+   retrieveData(DatabaseConfigLoader.getConnection("postgresql-database-config.properties"));
+
+
+
+    private static void handleSQLException(SQLException e) {
+        System.out.println("SQL Error: " + e.getMessage());
+        e.printStackTrace();
+    }
+    private static void log(String e) {
+       Utils.log(e);
+
+        }
+
+
+}
+
+
+
+
+
+
+
+    //        // Setup databases
+    //        DatabaseSetup.createPostgreSQLDatabase();
+    //        DatabaseSetup.createMySQLDatabase();
+    //        DatabaseSetup.createSQLiteDatabase();
+    //        DatabaseSetup.createSQLDatabase();
+
+            // Test the database connections
+    //        testDatabaseConnection(SQLDatabaseConnection.class.getName());
+    //        testDatabaseConnection(MySQLDatabaseConnection.class.getName());
+    //        testDatabaseConnection(SQLiteDatabaseConnection.class.getName());
+
+
+            retrieveData(DatabaseConfigLoader.getConnection("postgresql-database-config.properties"));
+
+    private static void retrieveData(Connection connection) {
+        String selectQuery = "SELECT * FROM users";
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(selectQuery)) {
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                String email = resultSet.getString("email");
+                int age = resultSet.getInt("age");
+
+                System.out.println("ID: " + id + ", Name: " + name + ", Email: " + email + ", Age: " + age);
+            }
+        } catch (SQLException e) {
+            handleSQLException(e);
+        }
+    }
