@@ -33,22 +33,66 @@ public class DatabaseAccessorImpl implements DatabaseAccessor {
         List<String> tableNames = getAllTables(connection);
 
         for (String tableName : tableNames) {
-            System.out.println("Table: " + tableName);
+            try {
+                System.out.println("Checking permissions for table: " + tableName);
 
-            // Retrieve data from each table
-            List<List<Object>> tableData = selectAllDataFromTable(connection, tableName);
+                // Check permissions for the table
+                if (!hasPermission(connection, tableName)) {
+                    System.out.println("Skipping table due to lack of permissions: " + tableName);
+                    continue;
+                }
 
-            // Add table name as a header in the result
-            if (!tableData.isEmpty()) {
-                List<Object> header = new ArrayList<>();
-                header.add("Table: " + tableName);
-                result.add(header);
-                result.addAll(tableData);
+                // Retrieve data from each table
+                List<List<Object>> tableData = selectAllDataFromTable(connection, tableName);
+
+                // Add table name as a header in the result
+                if (!tableData.isEmpty()) {
+                    List<Object> header = new ArrayList<>();
+                    header.add("Table: " + tableName);
+                    result.add(header);
+                    result.addAll(tableData);
+                }
+            } catch (SQLException e) {
+                System.err.println("Error checking permissions for table: " + tableName);
+                e.printStackTrace();  // Log the exception for debugging
             }
         }
 
         return result;
     }
+
+    private boolean hasPermission(Connection connection, String tableName) throws SQLException {
+        boolean hasPermission = false;
+        String currentUser = getCurrentUser(connection);
+
+        try (Statement statement = connection.createStatement()) {
+            // Check if the current user has SELECT privilege on the table
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT 1 FROM information_schema.table_privileges " +
+                            "WHERE table_name = '" + tableName + "' AND grantee = '" + currentUser + "' AND privilege_type = 'SELECT'"
+            );
+
+            hasPermission = resultSet.next();
+        }
+
+        return hasPermission;
+    }
+
+    private String getCurrentUser(Connection connection) throws SQLException {
+        // Retrieve the current user in a database-specific way
+        // This example assumes PostgreSQL, adjust for other databases
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery("SELECT current_user");
+            if (resultSet.next()) {
+                return resultSet.getString(1);
+            } else {
+                throw new SQLException("Unable to determine the current user");
+            }
+        }
+    }
+
+
+
 
 
     @Override

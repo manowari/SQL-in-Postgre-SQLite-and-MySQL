@@ -61,11 +61,14 @@ public class Main {
     private static void retrieveData(Connection connection) {
         DatabaseAccessor databaseAccessor = new DatabaseAccessorImpl();
 
-                  List<String> allTablesData = databaseAccessor.getAllTables(connection);
+        List<List<Object>> allTablesData = databaseAccessor.selectAllData(connection);
 
 // Process the results as needed
-
-                System.out.println(allTablesData.toString());
+        for (List<Object> tableData : allTablesData) {
+            for (Object rowData : tableData) {
+                System.out.println(rowData);
+            }
+        }
 
 
     }
