@@ -92,30 +92,66 @@ public class DatabaseAccessorImpl implements DatabaseAccessor {
     }
 
 
-@Override
-    public void createTable(Connection connection, String tableName){
+    @Override
+    public void createTable(Connection connection, String tableName) {
+        System.out.println("Creating table...");
 
-System.out.println("creating");
+        try {
+            // Check if the table already exists
+            if (tableExists(connection, tableName)) {
+                System.out.println("Table '" + tableName + "' already exists.");
+                return;  // Skip table creation
+            }
 
-    try {
-        Statement statement;
-        //Serial  Auto increment
+            // Serial Auto increment
+            String query = "CREATE TABLE " + tableName + " (empID SERIAL, name VARCHAR(200), PRIMARY KEY(empID))";
 
-        String query = "CREATE TABLE" + tableName + "empID SERIAL, name VARCHAR(200), PRIMARY KEY(empID)";
-        statement = connection.createStatement();
-        statement.executeQuery(query);
-        System.out.println("Table Created");
+            try (Statement statement = connection.createStatement()) {
+                statement.executeUpdate(query);
+                System.out.println("Table Created");
+            }
 
-    }catch (Exception e){
+        } catch (SQLException e) {
+            // Handle the exception appropriately
+            e.printStackTrace();
+        }
+    }
 
+    private boolean tableExists(Connection connection, String tableName) throws SQLException {
+        // Check if the table exists in the database
+        DatabaseMetaData metaData = connection.getMetaData();
+        try (ResultSet resultSet = metaData.getTables(null, null, tableName, null)) {
+            return resultSet.next();
+        }
+    }
+
+    @Override
+    public void dropTable(Connection connection, String tableName) {
+        System.out.println("Dropping table if it exists...");
+
+        try {
+            // Check if the table exists
+            if (!tableExists(connection, tableName)) {
+                System.out.println("Table '" + tableName + "' does not exist.");
+                return;  // Skip table dropping
+            }
+
+            // Drop the table
+            String query = "DROP TABLE " + tableName;
+
+            try (Statement statement = connection.createStatement()) {
+                statement.executeUpdate(query);
+                System.out.println("Table Dropped");
+            }
+
+        } catch (SQLException e) {
+            // Handle the exception appropriately
+            e.printStackTrace();
+        }
     }
 
 
 
-
-
-
-    }
 
     @Override
    public  List<List<Object>> selectAllDataFromTable(Connection connection, String tableName) {

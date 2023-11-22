@@ -22,16 +22,7 @@ public class Main {
 
 
     public static void main(String[] args) throws SQLException {
-//        // Setup databases
-//        DatabaseSetup.createPostgreSQLDatabase();
-//        DatabaseSetup.createMySQLDatabase();
-//        DatabaseSetup.createSQLiteDatabase();
-//        DatabaseSetup.createSQLDatabase();
 
-        // Test the database connections
-//        testDatabaseConnection(SQLDatabaseConnection.class.getName());
-//        testDatabaseConnection(MySQLDatabaseConnection.class.getName());
-//        testDatabaseConnection(SQLiteDatabaseConnection.class.getName());
 
 
   // retrieveData(PostgreSQLDatabaseConnection.getConnection());
@@ -41,24 +32,10 @@ String className = PostgreSQLDatabaseConnection.class.getName();
 Connection connection = getConnection(className);
 
 
-
-
-        // Test the insert operations
-        String[] columns = {"column_name"};
-        Object[] values = {'a'};
-
-        // Test the insert operations
-//        SQLDataManipulation.insertData("John Doe", columns, values, 25);
-//        MySQLDataManipulation.insertData("Jane Smith", 30);
-//        PostgreSQLDataManipulation.insertData("Bob Johnson", 28);
-//        SQLiteDataManipulation.insertData("Alice Brown", 22);
-
-
-        //
         try{
             DatabaseAccessor databaseAccessor = new DatabaseAccessorImpl();
             //
-            databaseAccessor.createTable( DatabaseConfigLoader.getConnection(psqlProperties), "table1");
+            databaseAccessor.dropTable( DatabaseConfigLoader.getConnection(psqlProperties), "table1");
 
         }catch (Exception e){
 

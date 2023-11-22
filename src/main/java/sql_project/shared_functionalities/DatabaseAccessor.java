@@ -12,5 +12,6 @@ public interface DatabaseAccessor {
     public List<List<Object>> selectAllData(Connection connection);
 
     public void createTable(Connection connection, String tableName);
+    public void dropTable(Connection connection, String tableName);
 
 }
