@@ -8,6 +8,8 @@
   - Common across all relational databases.
   - Fundamental commands: SELECT, INSERT, UPDATE, DELETE.
 
+Here is a [SQL Guide ](src/main/java/sql_project/notes/mysql.md) that you might find helpful.
+
 ## MySQL
 - **Use Cases:**
   - Well-suited for web applications, especially those using PHP.
@@ -23,6 +25,8 @@
       salary DECIMAL(10, 2)
   );
   ```
+
+Here is a [MySQL Guide ](src/main/java/sql_project/notes/sql.md) that you might find helpful.
 
 ## PostgreSQL
 - **Use Cases:**
@@ -41,6 +45,9 @@
   );
   ```
 
+Here is a [Postgre Guide ](src/main/java/sql_project/notes/postgre.md) that you might find helpful.
+
+
 ## SQLite
 - **Use Cases:**
     - Lightweight and embedded, suitable for mobile applications and smaller projects.
@@ -56,6 +63,9 @@
       salary REAL
   );
   ```
+
+Here is a [SQLite Guide ](src/main/java/sql_project/notes/sqlite.md) that you might find helpful.
+
 
 ## Choosing the Right Database
 - **Project Size:**

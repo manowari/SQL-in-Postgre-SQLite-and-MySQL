@@ -22,6 +22,17 @@
     <dependencies>
         <!-- PostgreSQL -->
         <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.29</version>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.3.6</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>${postgresql.version}</version>
@@ -40,5 +51,20 @@
             <artifactId>sqlite-jdbc</artifactId>
             <version>${sqlite.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.3.6</version>
+        </dependency>
+
+
+        <!-- SQL Server -->
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <version>9.4.0.jre8</version> <!-- Replace with the version you need -->
+        </dependency>
+
     </dependencies>
 </project>
