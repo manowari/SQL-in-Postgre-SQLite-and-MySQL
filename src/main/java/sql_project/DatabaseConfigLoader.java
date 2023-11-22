@@ -22,7 +22,7 @@ public class DatabaseConfigLoader {
         String driver = properties.getProperty("db.driver");
         String dbName = properties.getProperty("db.database");
 
-        log(" 2. Loaded properties - url: " + url + ", username: " + username + ", driver: " + driver + ", password: " + password + ", dbName: " + dbName);
+        log(" 2. Loaded properties - url: " + url + ", username:- " + username + ", driver: " + driver + ", password: " + password + ", dbName: " + dbName);
 
         if (loadDriver(driver)) {
             log(" 3. Loading DB driver...");
@@ -67,6 +67,8 @@ public class DatabaseConfigLoader {
     private static Connection establishConnection(String url, String username, String password, String dbName) {
         try {
             log(" 4 .trying....");
+            log(" -  log.... "  + url+ username + password + dbName  );
+
 
 
             Connection connection = DriverManager.getConnection(url, username, password);

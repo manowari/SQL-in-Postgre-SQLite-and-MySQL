@@ -4,8 +4,7 @@ import sql_project.mysql.MySQLDataManipulation;
 import sql_project.mysql.MySQLDatabaseConnection;
 import sql_project.postgre.PostgreSQLDataManipulation;
 import sql_project.postgre.PostgreSQLDatabaseConnection;
-import sql_project.setups.DatabaseSetup;
-import sql_project.shared_functionalities.DatabaseAccessor;
+ import sql_project.shared_functionalities.DatabaseAccessor;
 import sql_project.shared_functionalities.DatabaseAccessorImpl;
 import sql_project.sql.SQLDataManipulation;
 import sql_project.sql.SQLDatabaseConnection;
@@ -19,6 +18,9 @@ import java.sql.Statement;
 import java.util.List;
 
 public class Main {
+    private static final String psqlProperties = "postgresql-database-config.properties";
+
+
     public static void main(String[] args) throws SQLException {
 //        // Setup databases
 //        DatabaseSetup.createPostgreSQLDatabase();
@@ -32,7 +34,13 @@ public class Main {
 //        testDatabaseConnection(SQLiteDatabaseConnection.class.getName());
 
 
-        retrieveData(PostgreSQLDatabaseConnection.getConnection());
+  // retrieveData(PostgreSQLDatabaseConnection.getConnection());
+
+String className = PostgreSQLDatabaseConnection.class.getName();
+
+Connection connection = getConnection(className);
+
+
 
 
         // Test the insert operations
@@ -40,10 +48,26 @@ public class Main {
         Object[] values = {'a'};
 
         // Test the insert operations
-        SQLDataManipulation.insertData("John Doe", columns, values, 25);
-        MySQLDataManipulation.insertData("Jane Smith", 30);
-        PostgreSQLDataManipulation.insertData("Bob Johnson", 28);
-        SQLiteDataManipulation.insertData("Alice Brown", 22);
+//        SQLDataManipulation.insertData("John Doe", columns, values, 25);
+//        MySQLDataManipulation.insertData("Jane Smith", 30);
+//        PostgreSQLDataManipulation.insertData("Bob Johnson", 28);
+//        SQLiteDataManipulation.insertData("Alice Brown", 22);
+
+
+        //
+        try{
+            DatabaseAccessor databaseAccessor = new DatabaseAccessorImpl();
+            //
+            databaseAccessor.createTable( DatabaseConfigLoader.getConnection(psqlProperties), "table1");
+
+        }catch (Exception e){
+
+        }
+
+
+
+
+
     }
 
     private static void testDatabaseConnection(String dbName) {
@@ -71,6 +95,23 @@ public class Main {
         }
 
 
+    }
+
+    static Connection  getConnection(String classStr ){
+
+        Connection connection = null;
+try {
+    connection= (Connection) Class.forName(classStr).getMethod("getConnection").invoke(null);
+    System.out.println(classStr + " database connection established successfully.");
+
+return connection;
+}catch (Exception e){
+    e.printStackTrace();
+
+}
+        System.out.println(" "+connection);
+
+        return connection;
     }
 
     private static void handleSQLException(SQLException e) {

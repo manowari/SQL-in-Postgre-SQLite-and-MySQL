@@ -10,4 +10,7 @@ public interface DatabaseAccessor {
     List<List<Object>> selectAllDataFromTable(Connection connection, String tableName);
      List<String> getAllTables(Connection connection);
     public List<List<Object>> selectAllData(Connection connection);
+
+    public void createTable(Connection connection, String tableName);
+
 }

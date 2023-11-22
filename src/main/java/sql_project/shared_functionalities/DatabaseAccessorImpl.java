@@ -92,12 +92,36 @@ public class DatabaseAccessorImpl implements DatabaseAccessor {
     }
 
 
+@Override
+    public void createTable(Connection connection, String tableName){
+
+System.out.println("creating");
+
+    try {
+        Statement statement;
+        //Serial  Auto increment
+
+        String query = "CREATE TABLE" + tableName + "empID SERIAL, name VARCHAR(200), PRIMARY KEY(empID)";
+        statement = connection.createStatement();
+        statement.executeQuery(query);
+        System.out.println("Table Created");
+
+    }catch (Exception e){
+
+    }
 
 
+
+
+
+
+    }
 
     @Override
    public  List<List<Object>> selectAllDataFromTable(Connection connection, String tableName) {
         List<List<Object>> tableData = new ArrayList<>();
+
+        System.out.println(" selecting .... " );
 
         try {
             String query = "SELECT * FROM " + tableName + ";";

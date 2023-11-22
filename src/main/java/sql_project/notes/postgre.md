@@ -29,7 +29,14 @@ or
 
 `GRANT ALL PRIVILEGES ON SCHEMA public TO username;
 - This statement grants all privileges on a specific schema (public) within a database to a user (username). A schema is a way to organize database objects. In PostgreSQL, the public schema is the default schema where tables and other objects are created unless specified otherwise. Granting privileges on a schema allows the user to perform various actions on the objects within that schema, such as creating tables, executing functions, etc.
-` -
+` 
+
+
+**Grant Table permision to user **
+
+```roomsql
+ GRANT SELECT ON TABLE example_table TO username;
+```
 
 ### JDBC
 
