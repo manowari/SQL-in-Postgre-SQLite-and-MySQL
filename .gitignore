@@ -36,3 +36,5 @@ build/
 
 ### Mac OS ###
 .DS_Store
+/src/main/java/sql_project/setups/PostgreSqlExample.java
+/src/main/java/sql_project/setups/psldata.java
