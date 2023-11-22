@@ -3,6 +3,9 @@
 
  # Relational Databases: SQL, MySQL, PostgreSQL, and SQLite
 
+Here is a [Best Pratices ](best_practices.md) that you might find helpful.
+
+
 ## SQL (Structured Query Language)
 - **General Purpose:** Standardized language for managing and manipulating relational databases.
 - **Syntax:**
