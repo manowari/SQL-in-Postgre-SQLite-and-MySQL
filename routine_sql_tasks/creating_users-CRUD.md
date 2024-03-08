@@ -1,3 +1,18 @@
+To Check all users in the system: 
+```
+SELECT user, host FROM mysql.user;
+```
+
+The SQL query `SELECT user, host FROM mysql.user;` retrieves information from the `mysql.user` table in a MySQL database. Let's break down what each part of the query does:
+
+- `SELECT`: This keyword is used to specify the columns that you want to retrieve from the table.
+- `user, host`: These are the column names that you want to select from the `mysql.user` table. The `user` column contains the names of MySQL users, and the `host` column contains the hosts from which users are allowed to connect.
+- `FROM mysql.user`: This part of the query specifies the table from which you want to retrieve the data. In this case, it's the `mysql.user` table, which is a system table in MySQL that stores information about user accounts and privileges.
+
+When you execute this query, MySQL will return a result set containing the selected columns (`user` and `host`) from the `mysql.user` table.
+
+For example, if you have users set up in your MySQL database, the query will return a list of those users along with the hosts from which they can connect, as explained in the previous response.
+
 To create an admin user in MySQL, you need to follow these steps:
 
 1. **Create a New User:**
