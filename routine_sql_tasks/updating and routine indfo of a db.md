@@ -1,3 +1,6 @@
+Getting current port `SHOW GLOBAL VARIABLES LIKE 'PORT'`
+
+
 Adding a new field (column) to an existing table in MySQL can be done using the `ALTER TABLE` statement. This statement allows you to modify the structure of a table by adding, modifying, or dropping columns. When adding a new field, you might want to specify a default value for existing records to handle missing data gracefully.
 
 Here's the basic syntax for adding a new field to an existing table:
